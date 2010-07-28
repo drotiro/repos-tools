@@ -1,0 +1,88 @@
+#!/usr/bin/php
+<?
+
+$actions = array (
+	"list" => "list repositories",
+	"pull" => "pull repositories from origin",
+	"push" => "push repositories to origin",
+	"status" => "show statuses"
+);
+
+$cmds = array (
+	"list" => array ( 
+		"git" => "git config remote.origin.url", "svn" => "svn info | grep URL | sed -es/'URL: '//"
+	),
+	"pull" => array (
+		"git" => "git pull origin master"
+	),
+	"push" => array (
+		"git" => "git push origin master"
+	),
+	"status" => array (
+		"git" => "git status", "svn" => "svn status && echo"
+	)
+);
+
+class Repo {
+	public $path, $type;
+	function __construct($path, $type) {
+		$this->path = $path;
+		$this->type = $type;
+	}
+}
+
+function usage() {
+	global $actions;
+
+	echo "Usage: repost <action>\n";
+	echo "Actions:\n";
+	foreach( $actions as $k => $v) echo "\t$k\t$v\n";
+	exit;
+}
+
+function cmd($repo, $action) {
+	global $cmds;
+
+	echo basename($repo->path)."\t(".$repo->type.")\t";
+	chdir($repo->path);
+	$cl = $cmds[$action][$repo->type];
+	if(isset($cl)) system($cmds[$action][$repo->type]);
+	else echo "(nothing to do)\n";
+}
+
+function build_repo_list($config) {
+	$repobases = explode(":", $config["repobase"]);
+	$repos = array();
+	foreach($repobases as $b) {
+		$base = realpath($b);
+		foreach (glob("$base/*") as $file) {
+			if(is_dir($file)) {
+				if(is_dir("$file/.git")) $repos[] = new Repo( $file, "git" );
+				else if (is_dir("$file/.svn")) $repos[] = new Repo( $file, "svn" );
+			}
+		}
+	}
+	return $repos;
+}
+
+function parse_config($config) {
+	global $cmds;
+
+	//user can override commands...
+	foreach ($config as $k => $v) 
+		if(substr_compare($k, "cmd", 0, 3)==0) {
+			$keys = explode(".", $k);
+			$cmds[$keys[1]][$keys[2]] = $v;
+		}
+}
+
+$config = parse_ini_file(getenv("HOME")."/.repost");
+$repos = build_repo_list($config);
+parse_config($config);
+
+if(count($argv)!=2) usage();
+$action = $argv[1];
+
+if(!array_key_exists($action, $actions)) usage();
+foreach($repos as $repo) cmd($repo, $action);	
+?>
