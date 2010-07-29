@@ -97,7 +97,7 @@ function gen_config_file() {
 	global $cfg_path;
 
 	echo "Type the full paths of the directories that *contains* the repositories,\n";
-	echo "one per line. Terminate with a single dot (.)\n";
+	echo "one per line. Terminate with an empty line\n";
 	$repobase = "";
 	while($line = fgets(STDIN)) {
 		$line = substr($line, 0, -1); //drop the newline
