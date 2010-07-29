@@ -1,5 +1,5 @@
-	REPOST
-	======
+	repos-tools: perform simple tasks on your repositories
+	======================================================
 
 repost is a script to perform simple tasks on all of your repositories at once.
 
@@ -9,14 +9,14 @@ Run it with no arguments to see available options, eg.
 Usage: repost <action>
 Actions:
         list    list repositories
-        pull    pull repositories from origin
-        push    push repositories to origin
+        pull    pull repositories from origin/parent
+        push    push repositories to origin/parent
         status  show statuses
 
 Repost reads the configuration from the '.repost' file in your home directory.
 The config file contains a list of directories to look for repositories
-(only git and svn at the moment) and an optional set of custom commands to
-perform instead of the default ones.
+(Git, Subversion and Bazaar at the moment) and an optional set of custom commands
+to perform instead of the default ones.
 
 Example .repost file
 --------------------

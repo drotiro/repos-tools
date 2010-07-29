@@ -1,25 +1,30 @@
 #!/usr/bin/php
 <?
+$vcs = array ( "git", "svn", "bzr" );
 
 $actions = array (
 	"list" => "list repositories",
-	"pull" => "pull repositories from origin",
-	"push" => "push repositories to origin",
+	"pull" => "pull repositories from origin/parent",
+	"push" => "push repositories to origin/parent",
 	"status" => "show statuses"
 );
 
 $cmds = array (
 	"list" => array ( 
-		"git" => "git config remote.origin.url", "svn" => "svn info | grep URL | sed -es/'URL: '//"
+		"git" => "git config remote.origin.url", 
+		"svn" => "svn info | grep URL | sed -es/'URL: '//",
+		"bzr" => "bzr info | grep 'parent branch' | sed -es/'  parent branch: '//"
 	),
 	"pull" => array (
-		"git" => "git pull origin master", "svn" => "svn update"
+		"git" => "git pull origin master", "svn" => "svn update", "bzr" => "bzr pull"
 	),
 	"push" => array (
-		"git" => "git push origin master"
+		"git" => "git push origin master", "bzr" => "bzr push :parent"
 	),
 	"status" => array (
-		"git" => "git status", "svn" => "svn status && echo"
+		"git" => "git status", 
+		"svn" => "svn status && echo",
+		"bzr" => "bzr status && echo"
 	)
 );
 
@@ -53,14 +58,18 @@ function cmd($repo, $action) {
 }
 
 function build_repo_list($config) {
+	global $vcs;
+
 	$repobases = explode(":", $config["repobase"]);
 	$repos = array();
 	foreach($repobases as $b) {
 		$base = realpath($b);
 		foreach (glob("$base/*") as $file) {
 			if(is_dir($file)) {
-				if(is_dir("$file/.git")) $repos[] = new Repo( $file, "git" );
-				else if (is_dir("$file/.svn")) $repos[] = new Repo( $file, "svn" );
+				foreach($vcs as $v) if(is_dir("$file/.$v")) {
+					$repos[] = new Repo($file, $v);
+					break;
+				}
 			}
 		}
 	}
