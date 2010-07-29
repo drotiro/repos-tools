@@ -87,7 +87,7 @@ function parse_config($config) {
 
 	//user can override commands...
 	foreach ($config as $k => $v) 
-		if(substr_compare($k, "cmd", 0, 3)==0) {
+		if(substr_compare($k, "cmd.", 0, 4)==0) {
 			$keys = explode(".", $k);
 			$cmds[$keys[1]][$keys[2]] = $v;
 		}
@@ -97,7 +97,7 @@ function gen_config_file() {
 	global $cfg_path;
 
 	echo "Type the full paths of the directories that *contains* the repositories,\n";
-	echo "one per line. Terminate with an empty line\n";
+	echo "one per line. Terminate with an empty line.\n";
 	$repobase = "";
 	while($line = fgets(STDIN)) {
 		$line = substr($line, 0, -1); //drop the newline
