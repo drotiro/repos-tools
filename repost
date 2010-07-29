@@ -3,6 +3,7 @@
 $vcs = array ( "git", "svn", "bzr" );
 
 $actions = array (
+	"diff" => "show what's changed in your working directories",
 	"list" => "list repositories",
 	"pull" => "pull repositories from origin/parent",
 	"push" => "push repositories to origin/parent",
@@ -10,6 +11,11 @@ $actions = array (
 );
 
 $cmds = array (
+	"diff" => array (
+		"git" => "git diff --stat && echo",
+		"svn" => "svn diff | diffstat",
+		"bzr" => "bzr diff | diffstat"
+	),
 	"list" => array ( 
 		"git" => "git config remote.origin.url", 
 		"svn" => "svn info | grep URL | sed -es/'URL: '//",
