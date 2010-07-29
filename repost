@@ -13,7 +13,7 @@ $cmds = array (
 		"git" => "git config remote.origin.url", "svn" => "svn info | grep URL | sed -es/'URL: '//"
 	),
 	"pull" => array (
-		"git" => "git pull origin master"
+		"git" => "git pull origin master", "svn" => "svn update"
 	),
 	"push" => array (
 		"git" => "git push origin master"
@@ -22,6 +22,8 @@ $cmds = array (
 		"git" => "git status", "svn" => "svn status && echo"
 	)
 );
+
+$cfg_path = getenv("HOME")."/.repost";
 
 class Repo {
 	public $path, $type;
@@ -47,7 +49,7 @@ function cmd($repo, $action) {
 	chdir($repo->path);
 	$cl = $cmds[$action][$repo->type];
 	if(isset($cl)) system($cmds[$action][$repo->type]);
-	else echo "(nothing to do)\n";
+	else echo "(don't know how to '$action' this repository)\n";
 }
 
 function build_repo_list($config) {
@@ -76,13 +78,36 @@ function parse_config($config) {
 		}
 }
 
-$config = parse_ini_file(getenv("HOME")."/.repost");
+function gen_config_file() {
+	global $cfg_path;
+
+	echo "Type the full paths of the directories that *contains* the repositories,\n";
+	echo "one per line. Terminate with a single dot (.)\n";
+	$repobase = "";
+	while($line = fgets(STDIN)) {
+		$line = substr($line, 0, -1); //drop the newline
+		if($line=="") break;
+		$repobase = "$repobase:$line";
+	}
+	if($repobase=="") {
+		echo "No base directory given. Quitting.\n";
+		exit;
+	}
+	$repobase = "repobase = \"".substr($repobase,1)."\"\n";
+	file_put_contents($cfg_path,$repobase);
+}
+
+/* Check args */
+if(count($argv)!=2) usage();
+$action = $argv[1];
+if(!array_key_exists($action, $actions)) usage();
+
+/* Read configuration */
+if(!is_file($cfg_path)) gen_config_file();
+$config = parse_ini_file($cfg_path);
 $repos = build_repo_list($config);
 parse_config($config);
 
-if(count($argv)!=2) usage();
-$action = $argv[1];
-
-if(!array_key_exists($action, $actions)) usage();
+/* Do things */
 foreach($repos as $repo) cmd($repo, $action);	
 ?>
