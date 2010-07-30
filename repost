@@ -3,6 +3,7 @@
 $vcs = array ( "git", "svn", "bzr" );
 
 $actions = array (
+	"build" => "build with make or ant",
 	"diff" => "show what's changed in your working directories",
 	"list" => "list repositories",
 	"pull" => "pull repositories from origin/parent",
@@ -11,6 +12,11 @@ $actions = array (
 );
 
 $cmds = array (
+	"build" => array (
+		"git" => "([ -f Makefile ] && make ) || ([ -f build.xml ] && ant)",
+		"svn" => "([ -f Makefile ] && make ) || ([ -f build.xml ] && ant)",
+		"bzr" => "([ -f Makefile ] && make ) || ([ -f build.xml ] && ant)"
+	),
 	"diff" => array (
 		"git" => "git diff --stat",
 		"svn" => "svn diff | diffstat",
