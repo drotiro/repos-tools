@@ -12,7 +12,7 @@ $actions = array (
 
 $cmds = array (
 	"diff" => array (
-		"git" => "git diff --stat && echo",
+		"git" => "git diff --stat",
 		"svn" => "svn diff | diffstat",
 		"bzr" => "bzr diff | diffstat"
 	),
@@ -29,8 +29,8 @@ $cmds = array (
 	),
 	"status" => array (
 		"git" => "git status", 
-		"svn" => "svn status && echo",
-		"bzr" => "bzr status && echo"
+		"svn" => "svn status",
+		"bzr" => "bzr status"
 	)
 );
 
@@ -53,13 +53,19 @@ function usage() {
 	exit;
 }
 
+function systemln($str) {
+	$out = shell_exec($str);
+	if(substr($out,-1)!="\n") $out.="\n";
+	echo $out;
+}
+
 function cmd($repo, $action) {
 	global $cmds;
 
 	echo basename($repo->path)."\t(".$repo->type.")\t";
 	chdir($repo->path);
 	$cl = $cmds[$action][$repo->type];
-	if(isset($cl)) system($cmds[$action][$repo->type]);
+	if(isset($cl)) systemln($cmds[$action][$repo->type]);
 	else echo "(don't know how to '$action' this repository)\n";
 }
 
