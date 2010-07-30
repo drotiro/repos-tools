@@ -8,11 +8,12 @@ Run it with no arguments to see available options, eg.
 
 Usage: repost <action>
 Actions:
-		diff    show what's changed in your working directories
-		list    list repositories
-		pull    pull repositories from origin/parent
-		push    push repositories to origin/parent
-		status  show statuses
+        build   build with make or ant
+        diff    show what's changed in your working directories
+        list    list repositories
+        pull    pull repositories from origin/parent
+        push    push repositories to origin/parent
+        status  show statuses
 
 Repost reads the configuration from the '.repost' file in your home directory.
 The config file contains a list of directories to look for repositories
