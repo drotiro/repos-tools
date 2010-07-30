@@ -11,6 +11,7 @@ Actions:
         build   build with make or ant
         diff    show what's changed in your working directories
         list    list repositories
+        log     show last commit logs
         pull    pull repositories from origin/parent
         push    push repositories to origin/parent
         status  show statuses

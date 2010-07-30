@@ -6,6 +6,7 @@ $actions = array (
 	"build" => "build with make or ant",
 	"diff" => "show what's changed in your working directories",
 	"list" => "list repositories",
+	"log" => "show last commit logs",
 	"pull" => "pull repositories from origin/parent",
 	"push" => "push repositories to origin/parent",
 	"status" => "show statuses"
@@ -26,6 +27,11 @@ $cmds = array (
 		"git" => "git config remote.origin.url", 
 		"svn" => "svn info | grep URL | sed -es/'URL: '//",
 		"bzr" => "bzr info | grep 'parent branch' | sed -es/'  parent branch: '//"
+	),
+	"log" => array (
+		"git" => "git log -n 1 --oneline",
+		"svn" => "svn log -l 1 | head -n 4 | tail -n 1",
+		"bzr" => "bzr log -l1 --line"
 	),
 	"pull" => array (
 		"git" => "git pull origin master", "svn" => "svn update", "bzr" => "bzr pull"
