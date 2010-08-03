@@ -1,0 +1,74 @@
+#!/usr/bin/php
+<?
+	include('utils.inc');
+
+	$actions = array ( 
+		"issues" => "list, comment and close an issue (expects an issue #)",
+		"info" => "get info on my network and watched repositories",
+		"follow" => "follow an user (expects an username)",
+		"followers" => "list my followers"
+	);
+
+	function usage() {
+		global $argv, $actions;
+		$name = basename($argv[0]);
+
+		echo "Usage: $name <command> [<args>]\n";
+		echo "commands:\n";
+		foreach ($actions as $k => $v) echo "\t$k\t$v\n";
+		exit;
+	}
+
+	function print_user($user) {
+		echo "User: ".$user["login"]." (".$user["name"].")\n";
+		echo "Pubblic repositories: ".$user["public_repo_count"];
+		echo "\nFollowing ".$user["following_count"]." users\n";
+		echo "Followed by ".$user["followers_count"]." users\n";
+	}
+
+	function print_repos($watches) {
+		foreach ($watches as $repo) {
+			echo "\t".$repo["owner"]."/"; color_on(GREEN);
+			echo $repo["name"]; color_off();
+			echo "\tat ".$repo["url"]."\n";
+		}
+	}
+
+	function print_followers($followers) {
+		$cf = count($followers);
+		echo "You have $cf follower(s)";
+		if($cf) echo ": ".implode(", ", $followers);
+		echo ".\n";
+	}
+
+	function is_not_mine($repo) {
+		global $gh_user;
+
+		return $repo["owner"] != $gh_user;
+	}
+
+	$argc = count($argv);
+	if($argc < 2) usage();
+	if(!array_key_exists($argv[1], $actions)) usage();
+
+	include('php_github.inc');
+	switch($argv[1]) {
+		case "info":
+			$user = $gh->getUserApi()->show($gh_user);
+			print_user($user);
+			$repos = $gh->getRepoApi()->getUserRepos($gh_user);
+			echo "Your repositories (".count($repos)."):\n";
+			print_repos($repos);
+			$watches = $gh->getUserApi()->getWatchedRepos($gh_user);
+			$watches = array_filter($watches, 'is_not_mine');
+			echo "Watched repositories (".count($watches)."):\n";
+			print_repos($watches);
+			break;
+		case "followers":
+			$followers = $gh->getUserApi()->getFollowers($gh_user);
+			print_followers($followers);
+			break;
+	}
+
+	$gh->deauthenticate();
+?>

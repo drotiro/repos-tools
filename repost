@@ -1,5 +1,6 @@
 #!/usr/bin/php
 <?
+include('utils.inc');
 $vcs = array ( "git", "svn", "bzr" );
 
 $actions = array (
@@ -71,19 +72,10 @@ function usage() {
 	exit;
 }
 
-function systemln($str) {
-	$out = shell_exec($str);
-	if(substr($out,-1)!="\n") $out.="\n";
-	echo $out;
-}
-
-function color_off() { system("tput sgr0"); }
-function color_on() { system("echo -n \033[32m"); }
-
 function cmd($repo, $action) {
 	global $cmds;
 
-	color_on();
+	color_on(GREEN);
 	echo basename($repo->path)."\t(".$repo->type.")\t";
 	color_off();
 	chdir($repo->path);
