@@ -57,11 +57,17 @@ class Repo {
 }
 
 function usage() {
-	global $actions;
+	global $actions, $argv;
+	$name = basename($argv[0]);
 
-	echo "Usage: repost <action>\n";
+	echo "Usage: $name <action> [<repolist>]\n";
 	echo "Actions:\n";
 	foreach( $actions as $k => $v) echo "\t$k\t$v\n";
+	echo "<repolist> can be one of:\n";
+	echo "\t* all\t(the default) apply command to all the repositories\n";
+	echo "\t* a comma separated list of repository names and/or types.\n";
+	echo "\t  Eg.\t$name build repo1,repo2\t=> builds repositories repo1 and repo2\n";
+	echo "\t\t$name push git:\t\t=> push all Git repositories to origin\n";
 	exit;
 }
 
@@ -86,7 +92,7 @@ function cmd($repo, $action) {
 	else echo "(don't know how to '$action' this repository)\n";
 }
 
-function build_repo_list($config) {
+function build_repo_list($config, $filter) {
 	global $vcs;
 
 	$repobases = explode(":", $config["repobase"]);
@@ -94,11 +100,14 @@ function build_repo_list($config) {
 	foreach($repobases as $b) {
 		$base = realpath($b);
 		foreach (glob("$base/*") as $file) {
-			if(is_dir($file)) {
-				foreach($vcs as $v) if(is_dir("$file/.$v")) {
-					$repos[] = new Repo($file, $v);
-					break;
-				}
+			if(is_dir($file) ) {
+				foreach($vcs as $v) if(is_dir("$file/.$v"))
+					if( in_array("all", $filter) || 
+						in_array(basename($file), $filter) ||
+						in_array("$v:", $filter)) {
+							$repos[] = new Repo($file, $v);
+							break;
+					}
 			}
 		}
 	}
@@ -136,14 +145,16 @@ function gen_config_file() {
 }
 
 /* Check args */
-if(count($argv)!=2) usage();
+$argc = count($argv);
+if($argc<2 || $argc>3) usage();
 $action = $argv[1];
 if(!array_key_exists($action, $actions)) usage();
+$filter = isset($argv[2]) ? explode(",", $argv[2]) : array ("all") ;
 
 /* Read configuration */
 if(!is_file($cfg_path)) gen_config_file();
 $config = parse_ini_file($cfg_path);
-$repos = build_repo_list($config);
+$repos = build_repo_list($config, $filter);
 parse_config($config);
 
 /* Do things */
