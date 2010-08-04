@@ -69,11 +69,12 @@ function usage() {
 	echo "\t* a comma separated list of repository names and/or types.\n";
 	echo "\t  Eg.\t$name build repo1,repo2\t=> builds repositories repo1 and repo2\n";
 	echo "\t\t$name push git:\t\t=> push all Git repositories to origin\n";
+	echo "or you can execute any command with '$name do <repolist> <command>'\n";
 	exit;
 }
 
 function cmd($repo, $action) {
-	global $cmds;
+	global $cmds, $argv;
 
 	color_on(GREEN);
 	echo basename($repo->path)."\t(".$repo->type.")\t";
@@ -81,6 +82,7 @@ function cmd($repo, $action) {
 	chdir($repo->path);
 	$cl = $cmds[$action][$repo->type];
 	if(isset($cl)) systemln($cmds[$action][$repo->type]);
+	else if($action=='do') systemln($argv[3]);
 	else echo "(don't know how to '$action' this repository)\n";
 }
 
@@ -138,10 +140,11 @@ function gen_config_file() {
 
 /* Check args */
 $argc = count($argv);
-if($argc<2 || $argc>3) usage();
+if($argc<2) usage();
 $action = $argv[1];
-if(!array_key_exists($action, $actions)) usage();
-$filter = isset($argv[2]) ? explode(",", $argv[2]) : array ("all") ;
+if(!array_key_exists($action, $actions) && $action!='do') usage();
+if($action=='do' && $argc!=4) usage();
+$filter = isset($argv[2]) ? explode(",", $argv[2]) : array ("all");
 
 /* Read configuration */
 if(!is_file($cfg_path)) gen_config_file();

@@ -7,14 +7,14 @@
 		"create" =>"<name> create a public repository called <name>",
 		"fork" => "<repo> fork a repository",
 		"info" => "get info on my network and watched repositories",
-		"issues" => "list (lists all open issues) or:\n\t\t".
-					"{comment|close} <issue #> [<comment>]\n\t\t".
-					"(uses the repository you're working on)",
+		"issues" => "list (lists all open issues) (*) or:\n\t\t".
+					"{comment|close} <issue #> [<comment>]",
 		"follow" => "<user> start following an user",
 		"followers" => "list my followers",
 		"unfollow" => "<user> stop following an user",
 		"unwatch" => "<repo> stop watching a repository",
-		"watch" => "<repo> start watching a repository"
+		"watch" => "<repo> start watching a repository",
+		"watchers" => "list watchers (*)"
 	);
 
 	function usage() {
@@ -24,6 +24,7 @@
 		echo "Usage: $name <command> [<args>]\n";
 		echo "commands:\n";
 		foreach ($actions as $k => $v) echo "\t$k\t$v\n";
+		echo "commands marked with (*) must be run from a working dir.\n";
 		exit;
 	}
 
@@ -46,6 +47,13 @@
 		$cf = count($followers);
 		echo "You have $cf follower(s)";
 		if($cf) echo ": ".implode(", ", $followers);
+		echo ".\n";
+	}
+
+	function print_watchers($watchers, $repo) {
+		$cf = count($watchers);
+		echo "You have $cf watcher(s) for repository $repo";
+		if($cf) echo ": ".implode(", ", $watchers);
 		echo ".\n";
 	}
 
@@ -151,6 +159,12 @@
 			check_third_arg($argc, $argv);
 			check_repo_arg($argv[2]);
 			$gh->get('repos/watch/'.$argv[2]);
+			break;
+		case "watchers":
+			check_is_wd();
+			$repo =  basename(getcwd());
+			$res = $gh->get("/repos/show/$gh_user/$repo/watchers");
+			print_watchers($res["watchers"], $repo);
 			break;
 		case "unwatch":
 			check_third_arg($argc, $argv);

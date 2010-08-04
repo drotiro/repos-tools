@@ -29,6 +29,7 @@ Actions:
     * a comma separated list of repository names and/or types.
       Eg.   repost build repo1,repo2        => builds repositories repo1 and repo2
             repost push git:                => push all Git repositories to origin
+or you can execute any command with 'repost do <repolist> <command>'
 
 Repost reads the configuration from the '.repost' file in your home directory.
 The config file contains a list of directories to look for repositories
@@ -59,14 +60,15 @@ commands:
         create  <name> create a public repository called <name>
         fork    <repo> fork a repository
         info    get info on my network and watched repositories
-        issues  list (lists all open issues) or:
+        issues  list (lists all open issues) (*) or:
                 {comment|close} <issue #> [<comment>]
-                (uses the repository you're working on)
         follow  <user> start following an user
         followers       list my followers
         unfollow        <user> stop following an user
         unwatch <repo> stop watching a repository
         watch   <repo> start watching a repository
+        watchers        list watchers (*)
+commands marked with (*) must be run from a working dir.
 
 
 Copyright and license
