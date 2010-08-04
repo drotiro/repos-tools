@@ -3,8 +3,11 @@
 	include('utils.inc');
 
 	$actions = array ( 
+		"clone" => "<reponame> clones the specified repository",
 		"info" => "get info on my network and watched repositories",
-		"issues" => "{list|comment|close} <issue #>",
+		"issues" => "list (lists all open issues) or:\n\t\t".
+					"{comment|close} <issue #> [<comment>]\n\t\t".
+					"(uses the repository you're working on)",
 		"follow" => "<user> start following an user",
 		"followers" => "list my followers",
 		"unfollow" => "<user> stop following an user",
@@ -44,6 +47,13 @@
 		echo ".\n";
 	}
 
+	function print_issues($issues) {
+		foreach ($issues as $issue) {
+			color_on(RED); echo "(".$issue["number"].") ";
+			color_off(); echo $issue["title"]."\n";
+		}
+	}
+
 	function is_not_mine($repo) {
 		global $gh_user;
 
@@ -70,6 +80,12 @@
 
 	include('php_github.inc');
 	switch($argv[1]) {
+		case "clone":
+			check_third_arg($argc, $argv);
+			$repo = $argv[2];
+			if(strpos($repo, '/')===FALSE) $repo = $gh_user."/".$repo;
+			system("git clone git@github.com:$repo.git");
+			break;
 		case "info":
 			$user = $gh->getUserApi()->show($gh_user);
 			print_user($user);
@@ -80,6 +96,25 @@
 			$watches = array_filter($watches, 'is_not_mine');
 			echo "Watched repositories (".count($watches)."):\n";
 			print_repos($watches);
+			break;
+		case "issues":
+			check_third_arg($argc, $argv);
+			$repo =  basename(getcwd());
+			if($argv[2]=="list") {
+				$issues = $gh->getIssueApi()->getList(
+					$gh_user,
+					$repo,
+					'open');
+				print_issues($issues);
+			} else if($argv[2]=="close") {
+				$gh->getIssueApi()->close($gh_user, $repo, $argv[3]);
+			} else if($argv[2]=="comment") {
+				$gh->getIssueApi()->addComment($gh_user, $repo, 
+					$argv[3], $argv[4]);
+			} else {
+				echo "Can't do '".$argv[2]."' on an issue.\n";
+				usage();
+			}
 			break;
 		case "follow":
 			check_third_arg($argc, $argv);
