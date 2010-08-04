@@ -55,7 +55,7 @@ Run it with no arguments to see available options:
 
 Usage: github <command> [<args>]
 commands:
-        clone   <reponame> clones the specified repository
+        clone   <repo> clones the specified repository
         info    get info on my network and watched repositories
         issues  list (lists all open issues) or:
                 {comment|close} <issue #> [<comment>]

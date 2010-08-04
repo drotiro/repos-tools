@@ -3,7 +3,7 @@
 	include('utils.inc');
 
 	$actions = array ( 
-		"clone" => "<reponame> clones the specified repository",
+		"clone" => "<repo> clones the specified repository",
 		"info" => "get info on my network and watched repositories",
 		"issues" => "list (lists all open issues) or:\n\t\t".
 					"{comment|close} <issue #> [<comment>]\n\t\t".
@@ -74,6 +74,13 @@
 		}
 	}
 
+	function check_is_wd() {
+		if(!is_dir(getcwd()."/.git")) {
+			echo "You should run this command in a working directory.\n\n";
+			usage();
+		}
+	}
+
 	$argc = count($argv);
 	if($argc < 2) usage();
 	if(!array_key_exists($argv[1], $actions)) usage();
@@ -99,6 +106,7 @@
 			break;
 		case "issues":
 			check_third_arg($argc, $argv);
+			check_is_wd();
 			$repo =  basename(getcwd());
 			if($argv[2]=="list") {
 				$issues = $gh->getIssueApi()->getList(
