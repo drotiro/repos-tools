@@ -1,10 +1,19 @@
 	repos-tools: perform simple tasks on your repositories
 	======================================================
 
-repost is a script to perform simple tasks on all of your repositories at once.
+A couple of utilities to work faster and easier on your code repositories:
 
-It requires only php cli to run.
-Run it with no arguments to see available options, eg.
+* repost: push, pull, build and do things on all of your repos, or some of them
+* github: command line client to github issues, following, watching, etc
+
+All of them are written in php and can be run from the shell prompt.
+
+repost
+------
+
+repost is a script to perform simple tasks on your repositories at once.
+
+Run it with no arguments to see available options:
 
 Usage: repost <action> [<repolist>]
 Actions:
@@ -26,13 +35,37 @@ The config file contains a list of directories to look for repositories
 (Git, Subversion and Bazaar at the moment) and an optional set of custom commands
 to perform instead of the default ones.
 
-Example .repost file
---------------------
+Example .repost file:
 
+#---------BEGIN EXAMPLE-------------#
  repobase = "/home/me/Projects:/share/workrepos"
 
  #example custom command
  #cmd.status.svn = "svn status --xml"
+
+#---------END EXAMPLE---------------#
+
+
+github
+------
+
+github is a command line client to some of the github's features.
+
+Run it with no arguments to see available options:
+
+Usage: github <command> [<args>]
+commands:
+        clone   <reponame> clones the specified repository
+        info    get info on my network and watched repositories
+        issues  list (lists all open issues) or:
+                {comment|close} <issue #> [<comment>]
+                (uses the repository you're working on)
+        follow  <user> start following an user
+        followers       list my followers
+        unfollow        <user> stop following an user
+        unwatch <repo> stop watching a repository
+        watch   <repo> start watching a repository
+
 
 Copyright and license
 ---------------------
