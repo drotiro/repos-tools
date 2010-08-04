@@ -173,5 +173,5 @@
 			break;
 	}
 
-	$gh->deauthenticate();
+	$gh->deAuthenticate();
 ?>
