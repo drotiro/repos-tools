@@ -56,6 +56,8 @@ Run it with no arguments to see available options:
 Usage: github <command> [<args>]
 commands:
         clone   <repo> clones the specified repository
+        create  <name> create a public repository called <name>
+        fork    <repo> fork a repository
         info    get info on my network and watched repositories
         issues  list (lists all open issues) or:
                 {comment|close} <issue #> [<comment>]

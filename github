@@ -4,6 +4,8 @@
 
 	$actions = array ( 
 		"clone" => "<repo> clones the specified repository",
+		"create" =>"<name> create a public repository called <name>",
+		"fork" => "<repo> fork a repository",
 		"info" => "get info on my network and watched repositories",
 		"issues" => "list (lists all open issues) or:\n\t\t".
 					"{comment|close} <issue #> [<comment>]\n\t\t".
@@ -92,6 +94,15 @@
 			$repo = $argv[2];
 			if(strpos($repo, '/')===FALSE) $repo = $gh_user."/".$repo;
 			system("git clone git@github.com:$repo.git");
+			break;
+		case "create":
+			check_third_arg($argc, $argv);
+			$gh->getRepoApi()->create($argv[2]);
+			break;
+		case "fork":
+			check_third_arg($argc, $argv);
+			check_repo_arg($argv[2]);
+			$gh->get('repos/fork/'.$argv[2]);
 			break;
 		case "info":
 			$user = $gh->getUserApi()->show($gh_user);
