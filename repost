@@ -77,7 +77,7 @@ function cmd($repo, $action) {
 	global $cmds, $argv;
 
 	color_on(GREEN);
-	echo basename($repo->path)."\n"; column(20);
+	echo basename($repo->path); column(20);
 	echo "(".$repo->type.")  ";
 	color_off();
 	chdir($repo->path);
