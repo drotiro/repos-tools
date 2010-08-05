@@ -59,7 +59,7 @@
 
 	function print_issues($issues) {
 		foreach ($issues as $issue) {
-			color_on(RED); echo "(".$issue["number"].") ";
+			color_on(RED); echo "#".$issue["number"]."\t";
 			color_off(); echo $issue["title"]."\n";
 		}
 	}
@@ -100,8 +100,13 @@
 		case "clone":
 			check_third_arg($argc, $argv);
 			$repo = $argv[2];
-			if(strpos($repo, '/')===FALSE) $repo = $gh_user."/".$repo;
-			system("git clone git@github.com:$repo.git");
+			/* if I don't specify a username, then it's a repo of mine
+			 * so clone using git. Otherwise go with ro http
+			 */
+			if(strpos($repo, '/')===FALSE)
+				system("git clone git@github.com:$gh_user/$repo.git");
+			else
+				system("git clone http://github.com/$repo.git");
 			break;
 		case "create":
 			check_third_arg($argc, $argv);
