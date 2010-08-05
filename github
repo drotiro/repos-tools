@@ -7,10 +7,11 @@
 		"create" =>"<name> create a public repository called <name>",
 		"fork" => "<repo> fork a repository",
 		"info" => "get info on my network and watched repositories",
-		"issues" => "list (lists all open issues) (*) or:\n\t\t".
-					"{comment|close} <issue #> [<comment>]",
+		"issues" => "list (lists all open issues) (*) or:\n".
+		"                {comment|close} <issue #> [<comment>]",
 		"follow" => "<user> start following an user",
 		"followers" => "list my followers",
+		"rinfo" =>	"info on this repository (*)",
 		"unfollow" => "<user> stop following an user",
 		"unwatch" => "<repo> stop watching a repository",
 		"watch" => "<repo> start watching a repository",
@@ -23,7 +24,7 @@
 
 		echo "Usage: $name <command> [<args>]\n";
 		echo "commands:\n";
-		foreach ($actions as $k => $v) echo "\t$k\t$v\n";
+		foreach ($actions as $k => $v) { pad("    $k",15); echo "\t$v\n"; }
 		echo "commands marked with (*) must be run from a working dir.\n";
 		exit;
 	}
@@ -33,6 +34,14 @@
 		pad("Pubblic repositories:", 30); echo $user["public_repo_count"];
 		pad("\nFollowing", 30); echo $user["following_count"]." users\n";
 		pad("Followed by", 30); echo $user["followers_count"]." users\n";
+	}
+
+	function print_repo($repo) {
+		pad("Name:", 20); color_on(GREEN); echo $repo["name"]; color_off();
+		pad("\nDescription:", 20); echo $repo["description"];
+		pad("\nHomepage:", 20); echo $repo["homepage"];
+		pad("\nForks:", 20); echo $repo["forks"];
+		pad("\nWatchers:", 20); echo $repo["watchers"]."\n";
 	}
 
 	function print_repos($watches) {
@@ -128,6 +137,12 @@
 			$watches = array_filter($watches, 'is_not_mine');
 			echo "Watched repositories (".count($watches)."):\n";
 			print_repos($watches);
+			break;
+		case "rinfo":
+			check_is_wd();
+			$name = basename(getcwd());
+			$repo = $gh->getRepoApi()->show($gh_user, $name);
+			print_repo($repo);
 			break;
 		case "issues":
 			check_third_arg($argc, $argv);

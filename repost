@@ -63,12 +63,12 @@ function usage() {
 
 	echo "Usage: $name <action> [<repolist>]\n";
 	echo "Actions:\n";
-	foreach( $actions as $k => $v) echo "\t$k\t$v\n";
+	foreach( $actions as $k => $v) { pad("    $k",15); echo "$v\n"; }
 	echo "<repolist> can be one of:\n";
-	echo "\t* all\t(the default) apply command to all the repositories\n";
-	echo "\t* a comma separated list of repository names and/or types.\n";
-	echo "\t  Eg.\t$name build repo1,repo2\t=> builds repositories repo1 and repo2\n";
-	echo "\t\t$name push git:\t\t=> push all Git repositories to origin\n";
+	echo "    * all\t(the default) apply command to all the repositories\n";
+	echo "    * a comma separated list of repository names and/or types. Eg.\n";
+	echo "      $name build repo1,repo2\t=> builds repositories repo1 and repo2\n";
+	echo "      $name push git:\t\t=> push all Git repositories to origin\n";
 	echo "or you can execute any command with '$name do <repolist> <command>'\n";
 	exit;
 }
