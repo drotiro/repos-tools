@@ -29,17 +29,18 @@
 	}
 
 	function print_user($user) {
-		echo "User: ".$user["login"]." (".$user["name"].")\n";
-		echo "Pubblic repositories: ".$user["public_repo_count"];
-		echo "\nFollowing ".$user["following_count"]." users\n";
-		echo "Followed by ".$user["followers_count"]." users\n";
+		pad("User:", 30); echo $user["login"]." (".$user["name"].")\n";	
+		pad("Pubblic repositories:", 30); echo $user["public_repo_count"];
+		pad("\nFollowing", 30); echo $user["following_count"]." users\n";
+		pad("Followed by", 30); echo $user["followers_count"]." users\n";
 	}
 
 	function print_repos($watches) {
 		foreach ($watches as $repo) {
-			echo "\t".$repo["owner"]."/"; color_on(GREEN);
-			echo $repo["name"]; color_off();
-			echo "\tat ".$repo["url"]."\n";
+			echo "    ".$repo["owner"]."/"; color_on(GREEN);
+			pad($repo["name"], 40);
+			color_off();
+			echo $repo["url"]."\n";
 		}
 	}
 

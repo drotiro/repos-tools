@@ -10,4 +10,17 @@ define(YELLOW,3);
 define(BLUE,4);
 function color_off() { system("tput sgr0"); }
 function color_on($code) { system("tput setaf $code"); }
+function column($col) {
+	if($col>0) {
+		system("tput cuu1 ; tput cuf $col");
+	} else {
+		$cols = substr(shell_exec("tput cols"),0,-1);
+		system("tput cuu1 ; tput cuf ".($cols+$col));
+	}
+}
+
+function pad($str, $w) {
+	echo "$str\n";
+	column($w);
+}
 ?>
