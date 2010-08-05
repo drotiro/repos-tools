@@ -56,18 +56,19 @@ Run it with no arguments to see available options:
 
 Usage: github <command> [<args>]
 commands:
-        clone   <repo> clones the specified repository
-        create  <name> create a public repository called <name>
-        fork    <repo> fork a repository
-        info    get info on my network and watched repositories
-        issues  list (lists all open issues) (*) or:
+    clone       <repo> clones the specified repository
+    create      <name> create a public repository called <name>
+    fork        <repo> fork a repository
+    info        get info on my network and watched repositories
+    issues      list (lists all open issues) (*) or:
                 {comment|close} <issue #> [<comment>]
-        follow  <user> start following an user
-        followers       list my followers
-        unfollow        <user> stop following an user
-        unwatch <repo> stop watching a repository
-        watch   <repo> start watching a repository
-        watchers        list watchers (*)
+    follow      <user> start following an user
+    followers   list my followers
+    rinfo       info on this repository (*)
+    unfollow    <user> stop following an user
+    unwatch     <repo> stop watching a repository
+    watch       <repo> start watching a repository
+    watchers    list watchers (*)
 commands marked with (*) must be run from a working dir.
 
 
