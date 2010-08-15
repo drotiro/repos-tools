@@ -1,4 +1,4 @@
-#!/usr/bin/php
+#!/usr/bin/env php
 <?
 include('utils.inc');
 $vcs = array ( "git", "svn", "bzr" );
