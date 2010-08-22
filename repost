@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?
 include('utils.inc');
-$vcs = array ( "git", "svn", "bzr" );
+$vcs = array ( "git", "svn", "bzr", "hg" );
 
 $actions = array (
 	"build" => "build with make or ant",
@@ -17,33 +17,38 @@ $cmds = array (
 	"build" => array (
 		"git" => "([ -f Makefile ] && make ) || ([ -f build.xml ] && ant)",
 		"svn" => "([ -f Makefile ] && make ) || ([ -f build.xml ] && ant)",
-		"bzr" => "([ -f Makefile ] && make ) || ([ -f build.xml ] && ant)"
+		"bzr" => "([ -f Makefile ] && make ) || ([ -f build.xml ] && ant)",
+		"hg" => "([ -f Makefile ] && make ) || ([ -f build.xml ] && ant)"
 	),
 	"diff" => array (
 		"git" => "git diff --stat",
 		"svn" => "svn diff | diffstat",
-		"bzr" => "bzr diff | diffstat"
+		"bzr" => "bzr diff | diffstat",
+		"hg" => "hg diif | diffstat"
 	),
 	"list" => array ( 
 		"git" => "git config remote.origin.url", 
 		"svn" => "svn info | grep URL | sed -es/'URL: '//",
-		"bzr" => "bzr info | grep 'parent branch' | sed -es/'  parent branch: '//"
+		"bzr" => "bzr info | grep 'parent branch' | sed -es/'  parent branch: '//",
+		"hg" => ""
 	),
 	"log" => array (
 		"git" => "git log -n 1 --oneline",
 		"svn" => "svn log -l 1 | head -n 4 | tail -n 1",
-		"bzr" => "bzr log -l1 --line"
+		"bzr" => "bzr log -l1 --line",
+		"hg" => "hg log -l1 --template '{desc}'"
 	),
 	"pull" => array (
-		"git" => "git pull origin master", "svn" => "svn update", "bzr" => "bzr pull"
+		"git" => "git pull origin master", "svn" => "svn update", "bzr" => "bzr pull", "hg" => "hg pull && hg update"
 	),
 	"push" => array (
-		"git" => "git push origin master", "bzr" => "bzr push :parent"
+		"git" => "git push origin master", "bzr" => "bzr push :parent", "hg" => "hg push"
 	),
 	"status" => array (
 		"git" => "git status", 
 		"svn" => "svn status",
-		"bzr" => "bzr status"
+		"bzr" => "bzr status",
+		"hg" => "hg status"
 	)
 );
 
