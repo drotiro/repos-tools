@@ -33,7 +33,7 @@ or you can execute any command with 'repost do <repolist> <command>'
 
 Repost reads the configuration from the '.repost' file in your home directory.
 The config file contains a list of directories to look for repositories
-(Git, Subversion and Bazaar at the moment) and an optional set of custom commands
+(Git, Subversion, Bazaar and Mercurial) and an optional set of custom commands
 to perform instead of the default ones.
 
 Example .repost file:

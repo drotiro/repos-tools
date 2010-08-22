@@ -30,7 +30,7 @@ $cmds = array (
 		"git" => "git config remote.origin.url", 
 		"svn" => "svn info | grep URL | sed -es/'URL: '//",
 		"bzr" => "bzr info | grep 'parent branch' | sed -es/'  parent branch: '//",
-		"hg" => ""
+		"hg" => "hg paths | grep default | sed -es/'default ='//"
 	),
 	"log" => array (
 		"git" => "git log -n 1 --oneline",
