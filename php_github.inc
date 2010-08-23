@@ -8,6 +8,13 @@
 		echo "as explained here <http://help.github.com/git-email-settings/>\n";
 		exit;
 	}
+	if(!function_exists("curl_init")) {
+		echo "Doh! It seems that your php interpreter lacks curl support.\n";
+		echo "Please recompile it or install the missing packages.\n";
+		echo "Eg. Debian/Ubuntu users can try this:\n";
+		echo "sudo apt-get install php5-curl\n";
+		exit;
+	}
 	try {
 		$gh->authenticate($gh_user, $gh_token);
 		
