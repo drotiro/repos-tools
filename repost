@@ -39,7 +39,7 @@ $cmds = array (
 		"hg" => "hg log -l1 --template '{desc}'"
 	),
 	"pull" => array (
-		"git" => "git pull origin master", "svn" => "svn update", "bzr" => "bzr pull", "hg" => "hg pull && hg update"
+		"git" => "git pull", "svn" => "svn update", "bzr" => "bzr pull", "hg" => "hg pull && hg update"
 	),
 	"push" => array (
 		"git" => "git push origin master", "bzr" => "bzr push :parent", "hg" => "hg push"
@@ -87,9 +87,9 @@ function cmd($repo, $action) {
 	echo "(".$repo->type.")  ";
 	color_off();
 	chdir($repo->path);
+	if($action=='do') { systemln($argv[3]); return; }
 	$cl = $cmds[$action][$repo->type];
 	if(isset($cl)) systemln($cmds[$action][$repo->type]);
-	else if($action=='do') systemln($argv[3]);
 	else echo "(don't know how to '$action' this repository)\n";
 }
 
