@@ -71,6 +71,7 @@ function usage() {
 	foreach( $actions as $k => $v) { pad("    $k",15); echo "$v\n"; }
 	echo "<repolist> can be one of:\n";
 	echo "    * all\t(the default) apply command to all the repositories\n";
+	echo "    * this\tapply command the the current working directory\n";
 	echo "    * a comma separated list of repository names and/or types. Eg.\n";
 	echo "      $name build repo1,repo2\t=> builds repositories repo1 and repo2\n";
 	echo "      $name push git:\t\t=> push all Git repositories to origin\n";
@@ -104,7 +105,8 @@ function build_repo_list($config, $filter) {
 				foreach($vcs as $v) if(is_dir("$file/.$v"))
 					if( in_array("all", $filter) || 
 						in_array(basename($file), $filter) ||
-						in_array("$v:", $filter)) {
+						in_array("$v:", $filter) ||
+						(in_array("this", $filter) && $file==getcwd()) ) {
 							$repos[] = new Repo($file, $v);
 							break;
 					}

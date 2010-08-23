@@ -26,6 +26,7 @@ Actions:
     status  show statuses
 <repolist> can be one of:
     * all   (the default) apply command to all the repositories
+	* this	apply command the the current working directory
     * a comma separated list of repository names and/or types.
       Eg.   repost build repo1,repo2        => builds repositories repo1 and repo2
             repost push git:                => push all Git repositories to origin
