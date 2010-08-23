@@ -6,6 +6,7 @@
 		"clone" => "<repo> clones the specified repository",
 		"create" =>"<name> create a public repository called <name>",
 		"fork" => "<repo> fork a repository",
+		"forkc" => "<repo> fork a repository and clone your copy",
 		"info" => "get info on my network and watched repositories",
 		"issues" => "list (lists all open issues) (*) or:\n".
 		"                {comment|close} <issue #> [<comment>]",
@@ -126,6 +127,13 @@
 			check_third_arg($argc, $argv);
 			check_repo_arg($argv[2]);
 			$gh->get('repos/fork/'.$argv[2]);
+			break;
+		case "forkc":
+			check_third_arg($argc, $argv);
+			check_repo_arg($argv[2]);
+			$gh->get('repos/fork/'.$argv[2]);
+			$repo = basename($argv[2]); //it's a path. isn't it?
+			system("git clone git@github.com:$gh_user/$repo.git");
 			break;
 		case "info":
 			$user = $gh->getUserApi()->show($gh_user);

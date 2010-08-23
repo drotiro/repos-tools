@@ -26,7 +26,7 @@ Actions:
     status  show statuses
 <repolist> can be one of:
     * all   (the default) apply command to all the repositories
-	* this	apply command the the current working directory
+    * this	apply command the the current working directory
     * a comma separated list of repository names and/or types.
       Eg.   repost build repo1,repo2        => builds repositories repo1 and repo2
             repost push git:                => push all Git repositories to origin
@@ -60,6 +60,7 @@ commands:
     clone       <repo> clones the specified repository
     create      <name> create a public repository called <name>
     fork        <repo> fork a repository
+    forkc       <repo> fork a repository and clone your copy
     info        get info on my network and watched repositories
     issues      list (lists all open issues) (*) or:
                 {comment|close} <issue #> [<comment>]
