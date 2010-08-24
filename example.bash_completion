@@ -1,0 +1,25 @@
+# Copy this into ~/.bash_completion to have it sourced from /etc/bash_completion
+
+have github && {
+_github() {
+    local WORDS="clone create fork forkc info issues follow followers rinfo unfollow unwatch watch watchers"
+
+    COMPREPLY=()
+    cur=`_get_cword`
+
+    COMPREPLY=( $( compgen -W "$WORDS" -- "$cur" ) )
+}
+complete -F _github github
+}
+
+have repost && {
+_repost() {
+    local WORDS="build diff list log pull push status do"
+
+    COMPREPLY=()
+    cur=`_get_cword`
+
+    COMPREPLY=( $( compgen -W "$WORDS" -- "$cur" ) )
+}
+complete -F _repost repost
+}
