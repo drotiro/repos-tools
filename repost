@@ -39,7 +39,7 @@ $cmds = array (
 		"hg" => "hg log -l1 --template '{desc}'"
 	),
 	"pull" => array (
-		"git" => "git pull", "svn" => "svn update", "bzr" => "bzr pull", "hg" => "hg pull && hg update"
+		"git" => "git pull origin master", "svn" => "svn update", "bzr" => "bzr pull", "hg" => "hg pull && hg update"
 	),
 	"push" => array (
 		"git" => "git push origin master", "bzr" => "bzr push :parent", "hg" => "hg push"
