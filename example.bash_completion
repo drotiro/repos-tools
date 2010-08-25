@@ -4,7 +4,7 @@ have github && {
 _github() {
     local WORDS="clone create fork forkc info issues follow followers rinfo unfollow unwatch watch watchers"
 	local cur prev
-	local NOARG="info followers rinfo watchers list"
+	local NOARG="$WORDS list comment close"
 
     COMPREPLY=()
     cur=`_get_cword`
@@ -24,13 +24,15 @@ complete -F _github github
 have repost && {
 _repost() {
     local WORDS="build diff list log pull push status do"
+	local REPSPEC="all this git: svn: bzr: hg:"
     local cur prev
 
     COMPREPLY=()
     cur=`_get_cword`
     prev=${COMP_WORDS[COMP_CWORD-1]}
 
-	[ "${WORDS/$prev/}" == "$WORDS" ] || WORDS="all this git: svn: bzr: hg:"
+	[ "${REPSPEC/$prev/}" == "$REPSPEC" ] || return
+	[ "${WORDS/$prev/}" == "$WORDS" ] || WORDS="$REPSPEC"
 
     COMPREPLY=( $( compgen -W "$WORDS" -- "$cur" ) )
 }
