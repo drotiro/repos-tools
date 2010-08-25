@@ -88,9 +88,12 @@ function cmd($repo, $action) {
 	color_off();
 	chdir($repo->path);
 	if($action=='do') { systemln($argv[3]); return; }
+	if(!array_key_exists($repo->type, $cmds[$action])) {
+		echo "(don't know how to '$action' this repository)\n";
+		return;
+	}
 	$cl = $cmds[$action][$repo->type];
-	if(isset($cl)) systemln($cmds[$action][$repo->type]);
-	else echo "(don't know how to '$action' this repository)\n";
+	systemln($cmds[$action][$repo->type]);
 }
 
 function build_repo_list($config, $filter) {
