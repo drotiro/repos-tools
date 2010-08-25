@@ -61,7 +61,7 @@ commands:
     create      <name> create a public repository called <name>
     fork        <repo> fork a repository
     forkc       <repo> fork a repository and clone your copy
-    info        get info on my network and watched repositories
+    info        [<user>] get info on a github user (on me by default)
     issues      list (lists all open issues) (*) or:
                 {comment|close} <issue #> [<comment>]
     follow      <user> start following an user
