@@ -92,7 +92,6 @@ function cmd($repo, $action) {
 		echo "(don't know how to '$action' this repository)\n";
 		return;
 	}
-	$cl = $cmds[$action][$repo->type];
 	systemln($cmds[$action][$repo->type]);
 }
 
