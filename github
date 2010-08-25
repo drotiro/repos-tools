@@ -7,7 +7,7 @@
 		"create" =>"<name> create a public repository called <name>",
 		"fork" => "<repo> fork a repository",
 		"forkc" => "<repo> fork a repository and clone your copy",
-		"info" => "get info on my network and watched repositories",
+		"info" => "[<user>] get info on a github user (on me by default)",
 		"issues" => "list (lists all open issues) (*) or:\n".
 		"                {comment|close} <issue #> [<comment>]",
 		"follow" => "<user> start following an user",
@@ -75,12 +75,6 @@
 		}
 	}
 
-	function is_not_mine($repo) {
-		global $gh_user;
-
-		return $repo["owner"] != $gh_user;
-	}
-
 	function check_third_arg($argc, $argv) {
 		if($argc<3) {
 			echo "Command ".$argv[1]." requires an argument.\n\n";
@@ -136,13 +130,15 @@
 			system("git clone git@github.com:$gh_user/$repo.git");
 			break;
 		case "info":
-			$user = $gh->getUserApi()->show($gh_user);
+			$uname = ($argc > 2 ? $argv[2] : $gh_user);
+			$user = $gh->getUserApi()->show($uname);
 			print_user($user);
-			$repos = $gh->getRepoApi()->getUserRepos($gh_user);
+			$repos = $gh->getRepoApi()->getUserRepos($uname);
 			echo "Your repositories (".count($repos)."):\n";
 			print_repos($repos);
-			$watches = $gh->getUserApi()->getWatchedRepos($gh_user);
-			$watches = array_filter($watches, 'is_not_mine');
+			$watches = $gh->getUserApi()->getWatchedRepos($uname);
+			foreach($watches as $k => $v) 
+				if ($v["owner"]==$uname) unset($watches[$k]);
 			echo "Watched repositories (".count($watches)."):\n";
 			print_repos($watches);
 			break;
