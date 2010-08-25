@@ -3,9 +3,18 @@
 have github && {
 _github() {
     local WORDS="clone create fork forkc info issues follow followers rinfo unfollow unwatch watch watchers"
+	local cur prev
+	local NOARG="info followers rinfo watchers list"
 
     COMPREPLY=()
     cur=`_get_cword`
+    prev=${COMP_WORDS[COMP_CWORD-1]}
+
+	if [ "$prev" == "issues" ]; then
+		WORDS="list comment close"
+	else
+		[ "${NOARG/$prev/}" == "$NOARG" ] || return
+	fi
 
     COMPREPLY=( $( compgen -W "$WORDS" -- "$cur" ) )
 }
@@ -15,9 +24,13 @@ complete -F _github github
 have repost && {
 _repost() {
     local WORDS="build diff list log pull push status do"
+    local cur prev
 
     COMPREPLY=()
     cur=`_get_cword`
+    prev=${COMP_WORDS[COMP_CWORD-1]}
+
+	[ "${WORDS/$prev/}" == "$WORDS" ] || WORDS="all this git: svn: bzr: hg:"
 
     COMPREPLY=( $( compgen -W "$WORDS" -- "$cur" ) )
 }
