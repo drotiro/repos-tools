@@ -134,7 +134,7 @@
 			$user = $gh->getUserApi()->show($uname);
 			print_user($user);
 			$repos = $gh->getRepoApi()->getUserRepos($uname);
-			echo "Your repositories (".count($repos)."):\n";
+			echo ($uname==$gh_user ? "Your r":"R")."epositories (".count($repos)."):\n";
 			print_repos($repos);
 			$watches = $gh->getUserApi()->getWatchedRepos($uname);
 			foreach($watches as $k => $v) 
