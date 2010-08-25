@@ -22,21 +22,21 @@ $cmds = array (
 	),
 	"diff" => array (
 		"git" => "git diff --stat",
-		"svn" => "svn diff | diffstat",
-		"bzr" => "bzr diff | diffstat",
-		"hg" => "hg diif | diffstat"
+		"svn" => "svn diff | diffstat -q",
+		"bzr" => "bzr diff | diffstat -q",
+		"hg" => "hg diff | diffstat -q"
 	),
 	"list" => array ( 
 		"git" => "git config remote.origin.url", 
 		"svn" => "svn info | grep URL | sed -es/'URL: '//",
 		"bzr" => "bzr info | grep 'parent branch' | sed -es/'  parent branch: '//",
-		"hg" => "hg paths | grep default | sed -es/'default ='//"
+		"hg" => "hg paths | grep default | sed -es/'default = '//"
 	),
 	"log" => array (
 		"git" => "git log -n 1 --oneline",
 		"svn" => "svn log -l 1 | head -n 4 | tail -n 1",
 		"bzr" => "bzr log -l1 --line",
-		"hg" => "hg log -l1 --template '{desc}'"
+		"hg" => "hg log -l1 --template '{node|short} {desc|firstline}'"
 	),
 	"pull" => array (
 		"git" => "git pull", "svn" => "svn update", "bzr" => "bzr pull", "hg" => "hg pull && hg update"
@@ -83,8 +83,8 @@ function cmd($repo, $action) {
 	global $cmds, $argv;
 
 	color_on(GREEN);
-	echo basename($repo->path); column(20);
-	echo "(".$repo->type.")  ";
+	pad(basename($repo->path), 20);
+	pad("(".$repo->type.")", 8);
 	color_off();
 	chdir($repo->path);
 	if($action=='do') { systemln($argv[3]); return; }

@@ -20,8 +20,12 @@ function column($col) {
 	}
 }
 
-function pad($str, $w) {
+function padto($str, $w) {
 	echo "$str";
 	column($w);
+}
+
+function pad($str, $w) {
+	printf("%-$w"."s", $str);
 }
 ?>
