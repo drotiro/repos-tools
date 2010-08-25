@@ -1,6 +1,6 @@
 #!/usr/bin/env php
 <?
-	include('utils.inc');
+	include('repos-tools/utils.inc');
 
 	$actions = array ( 
 		"clone" => "<repo> clones the specified repository",
@@ -106,7 +106,7 @@
 	if($argc < 2) usage();
 	if(!array_key_exists($argv[1], $actions)) usage();
 
-	include('php_github.inc');
+	include('repos-tools/php_github.inc');
 	switch($argv[1]) {
 		case "clone":
 			check_third_arg($argc, $argv);

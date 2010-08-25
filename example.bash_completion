@@ -1,4 +1,5 @@
-# Copy this into ~/.bash_completion to have it sourced from /etc/bash_completion
+# Copy this to ~/.bash_completion or /etc/bash_completion.d/repos-tools
+# to have it sourced from /etc/bash_completion
 
 have github && {
 _github() {
