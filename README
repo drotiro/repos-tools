@@ -6,7 +6,7 @@ A couple of utilities to work faster and easier on your code repositories:
 * repost: push, pull, build and do things on all of your repos, or some of them
 * github: command line client to github issues, following, watching, etc
 
-All of them are written in php and can be run from the shell prompt.
+They need the PHP cli. github also needs the cURL extension.
 
 repost
 ------
