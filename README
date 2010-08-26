@@ -57,20 +57,20 @@ Run it with no arguments to see available options:
 
 Usage: github <command> [<args>]
 commands:
-    clone       <repo> clones the specified repository
-    create      <name> create a public repository called <name>
-    fork        <repo> fork a repository
-    forkc       <repo> fork a repository and clone your copy
-    info        [<user>] get info on a github user (on me by default)
-    issues      list (lists all open issues) (*) or:
-                {comment|close} <issue #> [<comment>]
-    follow      <user> start following an user
-    followers   [<user>] list followers of <user> (mine by default)
-    rinfo       info on this repository (*)
-    unfollow    <user> stop following an user
-    unwatch     <repo> stop watching a repository
-    watch       <repo> start watching a repository
-    watchers    list watchers (*)
+   clone <repo>     	clone a repository
+   create <name>    	create a public repository
+   fork <repo>      	fork a repository
+   forkc <repo>     	fork a repository and clone your copy
+   info [<user>]    	get info on a github user (on me by default)
+   issues (*)       	list (lists all open issues) or:
+                        {comment|close} <issue #> [<comment>]
+   follow <user>    	start following an user
+   followers [<user>]	list followers of <user> (mine by default)
+   rinfo (*)        	info on this repository
+   unfollow <user>  	stop following an user
+   unwatch <repo>   	stop watching a repository
+   watch <repo>     	start watching a repository
+   watchers (*)     	list watchers
 commands marked with (*) must be run from a working dir.
 
 
