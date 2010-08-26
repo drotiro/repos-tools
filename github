@@ -3,20 +3,23 @@
 	include('repos-tools/utils.inc');
 
 	$actions = array ( 
-		"clone" => "<repo> clones the specified repository",
-		"create" =>"<name> create a public repository called <name>",
-		"fork" => "<repo> fork a repository",
-		"forkc" => "<repo> fork a repository and clone your copy",
-		"info" => "[<user>] get info on a github user (on me by default)",
-		"issues" => "list (lists all open issues) (*) or:\n".
-		"                {comment|close} <issue #> [<comment>]",
-		"follow" => "<user> start following an user",
-		"followers" => "[<user>] list followers of <user> (mine by default)",
-		"rinfo" =>	"info on this repository (*)",
-		"unfollow" => "<user> stop following an user",
-		"unwatch" => "<repo> stop watching a repository",
-		"watch" => "<repo> start watching a repository",
-		"watchers" => "list watchers (*)"
+		"clone"    => array("clone a repository", "<repo>"),
+		"create"   => array("create a public repository", "<name>"),
+		"fork"     => array("fork a repository", "<repo>"),
+		"forkc"    => array("fork a repository and clone your copy", "<repo>"),
+		"info"     => array("get info on a github user (on me by default)",
+				"[<user>]"),
+		"issues"   => array("list (lists all open issues) or:\n".
+		"                        {comment|close} <issue #> [<comment>]",
+				"(*)"),
+		"follow"   => array( "start following an user", "<user>" ),
+		"followers" => array( "list followers of <user> (mine by default)",
+				"[<user>]" ),
+		"rinfo"    => array("info on this repository", "(*)"),
+		"unfollow" => array("stop following an user", "<user>"),
+		"unwatch"  => array("stop watching a repository", "<repo>"),
+		"watch"    => array("start watching a repository", "<repo>"),
+		"watchers" => array("list watchers", "(*)"),
 	);
 
 	function usage() {
@@ -25,7 +28,10 @@
 
 		echo "Usage: $name <command> [<args>]\n";
 		echo "commands:\n";
-		foreach ($actions as $k => $v) { pad("    $k",15); echo "\t$v\n"; }
+		foreach ($actions as $k => $v) { 
+			pad("   $k ".$v[1],20);
+			echo "\t$v[0]\n"; 
+		}
 		echo "commands marked with (*) must be run from a working dir.\n";
 		exit;
 	}
