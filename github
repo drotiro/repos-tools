@@ -11,7 +11,7 @@
 		"issues" => "list (lists all open issues) (*) or:\n".
 		"                {comment|close} <issue #> [<comment>]",
 		"follow" => "<user> start following an user",
-		"followers" => "list my followers",
+		"followers" => "[<user>] list followers of <user> (mine by default)",
 		"rinfo" =>	"info on this repository (*)",
 		"unfollow" => "<user> stop following an user",
 		"unwatch" => "<repo> stop watching a repository",
@@ -54,9 +54,11 @@
 		}
 	}
 
-	function print_followers($followers) {
+	function print_followers($followers, $user) {
+		global $gh_user;
+
 		$cf = count($followers);
-		echo "You have $cf follower(s)";
+		echo ($user==$gh_user ? "You have": "$user has")." $cf follower(s)";
 		if($cf) echo ": ".implode(", ", $followers);
 		echo ".\n";
 	}
@@ -177,8 +179,9 @@
 			$gh->getUserApi()->unFollow($argv[2]);
 			break;
 		case "followers":
-			$followers = $gh->getUserApi()->getFollowers($gh_user);
-			print_followers($followers);
+			$user = ($argc > 2 ? $argv[2] : $gh_user);
+			$followers = $gh->getUserApi()->getFollowers($user);
+			print_followers($followers, $user);
 			break;
 		case "watch":
 			check_third_arg($argc, $argv);

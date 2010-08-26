@@ -65,7 +65,7 @@ commands:
     issues      list (lists all open issues) (*) or:
                 {comment|close} <issue #> [<comment>]
     follow      <user> start following an user
-    followers   list my followers
+    followers   [<user>] list followers of <user> (mine by default)
     rinfo       info on this repository (*)
     unfollow    <user> stop following an user
     unwatch     <repo> stop watching a repository
