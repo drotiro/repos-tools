@@ -1,0 +1,20 @@
+#!/usr/bin/env php
+<?
+	require('repos-tools/utils.inc');
+
+	function showItem($item) {
+		$title = $item->title;
+		$words = explode(" ", $title);
+		$author = array_shift($words);
+		$action = array_shift($words);
+		if($action=="started") $action="started ".array_shift($words);
+		color_on(GREEN); echo $author;
+		color_on(YELLOW); echo " ".$action." ";
+		color_off(); echo implode($words," ")."\n";
+	}
+
+	$feed = simplexml_load_file($argv[1]);
+	$items = $feed->entry;
+	foreach ($items as $item)
+		showItem($item);
+?>

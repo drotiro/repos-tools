@@ -1,6 +1,6 @@
 #!/usr/bin/env php
 <?
-include('repos-tools/utils.inc');
+require('repos-tools/utils.inc');
 $vcs = array ( "git", "svn", "bzr", "hg" );
 
 $actions = array (

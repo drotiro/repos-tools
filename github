@@ -1,6 +1,6 @@
 #!/usr/bin/env php
 <?
-	include('repos-tools/utils.inc');
+	require('repos-tools/utils.inc');
 
 	$actions = array ( 
 		"clone"    => array("clone a repository", "<repo>"),
@@ -15,6 +15,7 @@
 		"follow"   => array( "start following an user", "<user>" ),
 		"followers" => array( "list followers of <user> (mine by default)",
 				"[<user>]" ),
+		"news"     => array("show your private feed", ""),
 		"rinfo"    => array("info on this repository", "(*)"),
 		"unfollow" => array("stop following an user", "<user>"),
 		"unwatch"  => array("stop watching a repository", "<repo>"),
@@ -108,7 +109,7 @@
 	if($argc < 2) usage();
 	if(!array_key_exists($argv[1], $actions)) usage();
 
-	include('repos-tools/php_github.inc');
+	require('repos-tools/php_github.inc');
 	switch($argv[1]) {
 		case "clone":
 			check_third_arg($argc, $argv);
@@ -149,6 +150,9 @@
 				if ($v["owner"]==$uname) unset($watches[$k]);
 			echo "Watched repositories (".count($watches)."):\n";
 			print_repos($watches);
+			break;
+		case "news":
+			system("showfeed https://github.com/$gh_user.private.atom?token=$gh_token");
 			break;
 		case "rinfo":
 			check_is_wd();

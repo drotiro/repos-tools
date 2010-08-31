@@ -66,6 +66,7 @@ commands:
                         {comment|close} <issue #> [<comment>]
    follow <user>    	start following an user
    followers [<user>]	list followers of <user> (mine by default)
+   news              	show your private feed
    rinfo (*)        	info on this repository
    unfollow <user>  	stop following an user
    unwatch <repo>   	stop watching a repository
