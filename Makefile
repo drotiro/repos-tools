@@ -1,7 +1,7 @@
 BINDIR=/usr/local/bin
 INCDIR=/usr/share/php
 COMPDIR=/etc/bash_completion.d
-TOOLS=github repost showfeed
+TOOLS=github repost
 SCRIPTS=php-github-api repos-tools
 
 install:

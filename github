@@ -105,6 +105,17 @@
 		}
 	}
 
+    function showFeedItem($item) {
+        $title = $item->title;
+        $words = explode(" ", $title);
+        $author = array_shift($words);
+        $action = array_shift($words);
+        if($action=="started") $action="started ".array_shift($words);
+        color_on(GREEN); echo $author;
+        color_on(YELLOW); echo " ".$action." ";
+        color_off(); echo implode($words," ")."\n";
+    }
+
 	$argc = count($argv);
 	if($argc < 2) usage();
 	if(!array_key_exists($argv[1], $actions)) usage();
@@ -152,7 +163,9 @@
 			print_repos($watches);
 			break;
 		case "news":
-			system("showfeed https://github.com/$gh_user.private.atom?token=$gh_token");
+			$feed = simplexml_load_file("https://github.com/$gh_user.private.atom?token=$gh_token");
+			$items = $feed->entry;
+			foreach ($items as $item) showFeedItem($item);
 			break;
 		case "rinfo":
 			check_is_wd();
