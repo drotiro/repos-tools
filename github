@@ -3,6 +3,7 @@
 	require('repos-tools/utils.inc');
 
 	$actions = array ( 
+		"activity" => array("show activity feed for <user> (mine by default)", "[<user>]"),
 		"clone"    => array("clone a repository", "<repo>"),
 		"create"   => array("create a public repository", "<name>"),
 		"fork"     => array("fork a repository", "<repo>"),
@@ -110,11 +111,18 @@
         $words = explode(" ", $title);
         $author = array_shift($words);
         $action = array_shift($words);
-        if($action=="started") $action="started ".array_shift($words);
+        if($action=="started" || $action=="open")
+			$action = $action." ".array_shift($words);
         color_on(GREEN); echo $author;
         color_on(YELLOW); echo " ".$action." ";
         color_off(); echo implode($words," ")."\n";
     }
+
+	function showFeed($url) {
+		$feed = simplexml_load_file($url);
+		$items = $feed->entry;
+		foreach ($items as $item) showFeedItem($item);
+	}
 
 	$argc = count($argv);
 	if($argc < 2) usage();
@@ -122,6 +130,10 @@
 
 	require('repos-tools/php_github.inc');
 	switch($argv[1]) {
+		case "activity":
+			$uname = ($argc > 2 ? $argv[2] : $gh_user);
+			showFeed("http://github.com/$uname.atom");
+			break;
 		case "clone":
 			check_third_arg($argc, $argv);
 			$repo = $argv[2];
@@ -163,9 +175,7 @@
 			print_repos($watches);
 			break;
 		case "news":
-			$feed = simplexml_load_file("https://github.com/$gh_user.private.atom?token=$gh_token");
-			$items = $feed->entry;
-			foreach ($items as $item) showFeedItem($item);
+			showFeed("https://github.com/$gh_user.private.atom?token=$gh_token");
 			break;
 		case "rinfo":
 			check_is_wd();

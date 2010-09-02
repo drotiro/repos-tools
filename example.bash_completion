@@ -3,7 +3,7 @@
 
 have github && {
 _github() {
-    local WORDS="clone create fork forkc info issues follow followers news rinfo unfollow unwatch watch watchers"
+    local WORDS="activity clone create fork forkc info issues follow followers news rinfo unfollow unwatch watch watchers"
 	local cur prev
 	local NOARG="$WORDS list comment close"
 
