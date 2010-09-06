@@ -24,7 +24,7 @@ complete -F _github github
 
 have repost && {
 _repost() {
-    local WORDS="build diff list log pull push status do"
+    local WORDS="backup build diff list log pull push status do"
 	local REPSPEC="all this git: svn: bzr: hg:"
     local cur prev
 

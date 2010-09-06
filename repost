@@ -4,6 +4,7 @@ require('repos-tools/utils.inc');
 $vcs = array ( "git", "svn", "bzr", "hg" );
 
 $actions = array (
+	"backup" => "make a tarball with the project(s) directory",
 	"build" => "build with make or ant",
 	"diff" => "show what's changed in your working directories",
 	"list" => "list repositories",
@@ -13,12 +14,17 @@ $actions = array (
 	"status" => "show statuses"
 );
 
+$build_cmd = "([ -f Makefile ] && make ) || ([ -f build.xml ] && ant)";
+$archive_cmd = 'R=$(basename $(pwd)) && TF=/tmp/$R-$(date +\'%Y%m%d\').tar.bz2 && '
+	.'CMD="tar cjf $TF --exclude "*.git" "../$R"" && '
+	.'echo Creating backup file $TF && $CMD >/dev/null 2>&1';
+
 $cmds = array (
+	"backup" => array (
+		"git" => $archive_cmd, "svn" => $archive_cmd, "bzr" => $archive_cmd, "hg" => $archive_cmd
+	),
 	"build" => array (
-		"git" => "([ -f Makefile ] && make ) || ([ -f build.xml ] && ant)",
-		"svn" => "([ -f Makefile ] && make ) || ([ -f build.xml ] && ant)",
-		"bzr" => "([ -f Makefile ] && make ) || ([ -f build.xml ] && ant)",
-		"hg" => "([ -f Makefile ] && make ) || ([ -f build.xml ] && ant)"
+		"git" => $build_cmd, "svn" =>  $build_cmd, "bzr" => $build_cmd, "hg" => $build_cmd
 	),
 	"diff" => array (
 		"git" => "git diff --stat",
