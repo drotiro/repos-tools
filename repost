@@ -77,9 +77,10 @@ function usage() {
 	echo "<repolist> can be one of:\n";
 	echo "    * all\t(the default) apply command to all the repositories\n";
 	echo "    * this\tapply command the the current working directory\n";
-	echo "    * a comma separated list of repository names and/or types. Eg.\n";
-	echo "      $name build repo1,repo2\t=> builds repositories repo1 and repo2\n";
-	echo "      $name push git:\t\t=> push all Git repositories to origin\n";
+	echo "    * a comma separated list of repository names, types or aliases. Eg.\n";
+	echo "      $name build repo1,repo2 => builds repositories repo1 and repo2\n";
+	echo "      $name push git:         => push all Git repositories to origin\n";
+	echo "      $name pull @mine        => pull all repos aliased to 'mine'\n";
 	echo "or you can execute any command with '$name do <repolist> <command>'\n";
 	exit;
 }
@@ -101,9 +102,20 @@ function cmd($repo, $action) {
 	systemln($cmds[$action][$repo->type]." ".$append);
 }
 
+function expand_aliases($config, & $filter) {
+	foreach($filter as $k => $v){
+		$aname = substr($v,1);
+		if($v[0]=="@" && isset($config['alias.'.$aname])) {
+			unset($filter[$k]);
+			$filter = array_merge($filter, explode("," , $config['alias.'.$aname]));
+		}
+	}
+}
+
 function build_repo_list($config, $filter) {
 	global $vcs;
 
+	expand_aliases($config, $filter);
 	$repobases = explode(":", $config["repobase"]);
 	$repos = array();
 	foreach($repobases as $b) {
@@ -128,7 +140,7 @@ function parse_config($config) {
 	global $cmds;
 
 	//user can override commands...
-	foreach ($config as $k => $v) 
+	foreach ($config as $k => $v)
 		if(substr_compare($k, "cmd.", 0, 4)==0) {
 			$keys = explode(".", $k);
 			$cmds[$keys[1]][$keys[2]] = $v;
