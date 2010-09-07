@@ -4,7 +4,8 @@ require('repos-tools/utils.inc');
 $vcs = array ( "git", "svn", "bzr", "hg" );
 
 $actions = array (
-	"backup" => "make a tarball with the project(s) directory",
+	"backup" => "make a tarball with the project(s) directory\n".
+	"               (for additional parameters run 'repost-backup help')",
 	"build" => "build with make or ant",
 	"diff" => "show what's changed in your working directories",
 	"list" => "list repositories",
@@ -15,9 +16,7 @@ $actions = array (
 );
 
 $build_cmd = "([ -f Makefile ] && make ) || ([ -f build.xml ] && ant)";
-$archive_cmd = 'R=$(basename $(pwd)) && TF=/tmp/$R-$(date +\'%Y%m%d\').tar.bz2 && '
-	.'CMD="tar cjf $TF --exclude "*.git" "../$R"" && '
-	.'echo Creating backup file $TF && $CMD >/dev/null 2>&1';
+$archive_cmd = "repost-backup";
 
 $cmds = array (
 	"backup" => array (
@@ -93,12 +92,13 @@ function cmd($repo, $action) {
 	pad("(".$repo->type.")", 8);
 	color_off();
 	chdir($repo->path);
-	if($action=='do') { systemln($argv[3]); return; }
+	$append = (count($argv) > 3 ? implode(" ", array_slice($argv,3)) : "");
+	if($action=='do') { systemln($append); return; }
 	if(!array_key_exists($repo->type, $cmds[$action])) {
 		echo "(don't know how to '$action' this repository)\n";
 		return;
 	}
-	systemln($cmds[$action][$repo->type]);
+	systemln($cmds[$action][$repo->type]." ".$append);
 }
 
 function build_repo_list($config, $filter) {
@@ -159,7 +159,7 @@ $argc = count($argv);
 if($argc<2) usage();
 $action = $argv[1];
 if(!array_key_exists($action, $actions) && $action!='do') usage();
-if($action=='do' && $argc!=4) usage();
+if($action=='do' && $argc<4) usage();
 $filter = isset($argv[2]) ? explode(",", $argv[2]) : array ("all");
 
 /* Read configuration */

@@ -46,6 +46,7 @@ Run it with no arguments to see available options:
     Usage: repost <action> [<repolist>]
     Actions:
         backup  make a tarball with the project(s) directory
+                (for additional parameters run 'repost-backup help')
         build   build with make or ant
         diff    show what's changed in your working directories
         list    list repositories

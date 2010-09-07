@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [ "$1" == "help" ]; then
+	echo "Usage: repost backup <repolist> [<output_dir>] [<tag_or_release_name>]"
+	exit 1
+fi
+
+OUTDIR="${1:-/tmp}"
+TAG="${2:-$(date +"%Y%m%d")}"
+REPO="$(basename $(pwd))"
+BACKUP="$OUTDIR/$REPO-$TAG.tar.bz2"
+
+cd ..
+echo "Creating backup file $BACKUP"
+tar cjf $OUTDIR/$REPO-$TAG.tar.bz2 $REPO --exclude .git
