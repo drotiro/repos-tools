@@ -32,7 +32,7 @@ $cmds = array (
 		"hg" => "hg diff | diffstat -q"
 	),
 	"list" => array ( 
-		"git" => "git config remote.origin.url", 
+		"git" => "git config --get remote.origin.url", 
 		"svn" => "svn info | grep URL | sed -es/'URL: '//",
 		"bzr" => "bzr info | grep 'parent branch' | sed -es/'  parent branch: '//",
 		"hg" => "hg paths | grep default | sed -es/'default = '//"
