@@ -4,7 +4,7 @@
 
 	$actions = array ( 
 		"activity" => array("show activity feed for <user> (mine by default)", "[<user>]"),
-		"clone"    => array("clone a repository", "<repo>"),
+		"clone"    => array("clone one or more repositories", "<repo>+"),
 		"create"   => array("create a public repository", "<name>"),
 		"fork"     => array("fork a repository", "<repo>"),
 		"forkc"    => array("fork a repository and clone your copy", "<repo>"),
@@ -13,14 +13,14 @@
 		"issues"   => array("list (lists all open issues) or:\n".
 		"                        {comment|close} <issue #> [<comment>]",
 				"(*)"),
-		"follow"   => array( "start following an user", "<user>" ),
+		"follow"   => array( "start following one or more users", "<user>+" ),
 		"followers" => array( "list followers of <user> (mine by default)",
 				"[<user>]" ),
 		"news"     => array("show your private feed", ""),
 		"rinfo"    => array("info on this repository", "(*)"),
-		"unfollow" => array("stop following an user", "<user>"),
-		"unwatch"  => array("stop watching a repository", "<repo>"),
-		"watch"    => array("start watching a repository", "<repo>"),
+		"unfollow" => array("stop following users", "<user>+"),
+		"unwatch"  => array("stop watching repositories", "<repo>+"),
+		"watch"    => array("start watching one or more repository", "<repo>+"),
 		"watchers" => array("list watchers", "(*)"),
 	);
 
@@ -136,14 +136,14 @@
 			break;
 		case "clone":
 			check_third_arg($argc, $argv);
-			$repo = $argv[2];
 			/* if I don't specify a username, then it's a repo of mine
 			 * so clone using git. Otherwise go with ro http
 			 */
-			if(strpos($repo, '/')===FALSE)
-				system("git clone git@github.com:$gh_user/$repo.git");
-			else
-				system("git clone http://github.com/$repo.git");
+			foreach (array_slice($argv,2) as $repo)
+				if(strpos($repo, '/')===FALSE)
+					system("git clone git@github.com:$gh_user/$repo.git");
+				else
+					system("git clone http://github.com/$repo.git");
 			break;
 		case "create":
 			check_third_arg($argc, $argv);
@@ -205,11 +205,13 @@
 			break;
 		case "follow":
 			check_third_arg($argc, $argv);
-			$gh->getUserApi()->follow($argv[2]);
+			foreach (array_slice($argv, 2) as $user)
+				$gh->getUserApi()->follow($user);
 			break;
 		case "unfollow":
 			check_third_arg($argc, $argv);
-			$gh->getUserApi()->unFollow($argv[2]);
+			foreach (array_slice($argv, 2) as $user)
+				$gh->getUserApi()->unFollow($user);
 			break;
 		case "followers":
 			$user = ($argc > 2 ? $argv[2] : $gh_user);
@@ -219,7 +221,8 @@
 		case "watch":
 			check_third_arg($argc, $argv);
 			check_repo_arg($argv[2]);
-			$gh->get('repos/watch/'.$argv[2]);
+			foreach (array_slice($argv, 2) as $repo)
+				$gh->get('repos/watch/'.$repo);
 			break;
 		case "watchers":
 			check_is_wd();
@@ -230,7 +233,8 @@
 		case "unwatch":
 			check_third_arg($argc, $argv);
 			check_repo_arg($argv[2]);
-			$gh->get('repos/unwatch/'.$argv[2]);
+			foreach (array_slice($argv, 2) as $repo)
+				$gh->get('repos/unwatch/'.$repo);
 			break;
 	}
 
