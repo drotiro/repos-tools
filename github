@@ -107,15 +107,17 @@
 	}
 
     function showFeedItem($item) {
-        $title = $item->title;
-        $words = explode(" ", $title);
-        $author = array_shift($words);
-        $action = array_shift($words);
-        if($action=="started" || $action=="open")
+		$title = $item->title;
+		$when = $item->updated;
+		$words = explode(" ", $title);
+		$author = array_shift($words);
+		$action = array_shift($words);
+		if($action=="started" || $action=="open")
 			$action = $action." ".array_shift($words);
-        color_on(GREEN); echo $author;
-        color_on(YELLOW); echo " ".$action." ";
-        color_off(); echo implode($words," ")."\n";
+		echo date("[d/m/Y] ", strtotime($when));
+		color_on(GREEN); echo $author;
+		color_on(YELLOW); echo " ".$action." ";
+		color_off(); echo implode($words," ")."\n";
     }
 
 	function showFeed($url) {
