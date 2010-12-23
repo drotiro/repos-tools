@@ -1,4 +1,5 @@
 <?
+error_reporting(E_ERROR);
 function systemln($str) {
     $out = shell_exec($str);
     if(substr($out,-1)!="\n") $out.="\n";

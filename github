@@ -107,7 +107,7 @@
 	}
 
     function showFeedItem($item) {
-		$title = $item->title;
+		$title = preg_replace("/\[\[.*\]\](\w+)\[\[.*\]\]/", "\\1", $item->title);
 		$when = $item->updated;
 		$words = explode(" ", $title);
 		$author = array_shift($words);
@@ -122,6 +122,10 @@
 
 	function showFeed($url) {
 		$feed = simplexml_load_file($url);
+		if($feed === FALSE) {
+			echo "Can't read feed. Please check the specified arguments.\n";
+			return;
+		}
 		$items = $feed->entry;
 		foreach ($items as $item) showFeedItem($item);
 	}
