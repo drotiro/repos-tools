@@ -39,7 +39,7 @@ $cmds = array (
 	),
 	"log" => array (
 		"git" => "git log -n 1 --oneline",
-		"svn" => "svn log -l 1 | head -n 4 | tail -n 1",
+		"svn" => "svn log -l 1 --incremental | head -n 4 | tail -n 1",
 		"bzr" => "bzr log -l1 --line",
 		"hg" => "hg log -l1 --template '{node|short} {desc|firstline}'"
 	),
