@@ -169,7 +169,11 @@
 			break;
 		case "info":
 			$uname = ($argc > 2 ? $argv[2] : $gh_user);
-			$user = $gh->getUserApi()->show($uname);
+			try { $user = $gh->getUserApi()->show($uname); }
+			catch(Exception $e) { 
+				echo "Can't show user $uname, please check spelling.\n";
+				break;
+			}		
 			print_user($user);
 			$repos = $gh->getRepoApi()->getUserRepos($uname);
 			echo ($uname==$gh_user ? "Your r":"R")."epositories (".count($repos)."):\n";
@@ -211,8 +215,12 @@
 			break;
 		case "follow":
 			check_third_arg($argc, $argv);
-			foreach (array_slice($argv, 2) as $user)
-				$gh->getUserApi()->follow($user);
+			foreach (array_slice($argv, 2) as $user) {
+				try { $gh->getUserApi()->follow($user); }
+				catch(Exception $e) {
+					echo "Can't follow user $user, please check spelling.\n";
+				}
+			}
 			break;
 		case "unfollow":
 			check_third_arg($argc, $argv);
@@ -227,8 +235,12 @@
 		case "watch":
 			check_third_arg($argc, $argv);
 			check_repo_arg($argv[2]);
-			foreach (array_slice($argv, 2) as $repo)
-				$gh->get('repos/watch/'.$repo);
+			foreach (array_slice($argv, 2) as $repo) {
+				try { $gh->get('repos/watch/'.$repo); }
+				catch(Exception $e) {
+					echo "Can't watch repository $repo, please check spelling.\n";
+				}
+			}
 			break;
 		case "watchers":
 			check_is_wd();
