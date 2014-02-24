@@ -1,27 +1,6 @@
 # Copy this to ~/.bash_completion or /etc/bash_completion.d/repos-tools
 # to have it sourced from /etc/bash_completion
 
-have github && {
-_github() {
-    local WORDS="activity clone create fork forkc info issues follow followers news rinfo unfollow unwatch watch watchers"
-	local cur prev
-	local NOARG="$WORDS list comment close"
-
-    COMPREPLY=()
-    cur=`_get_cword`
-    prev=${COMP_WORDS[COMP_CWORD-1]}
-
-	if [ "$prev" == "issues" ]; then
-		WORDS="list comment close"
-	else
-		[ "${NOARG/$prev/}" == "$NOARG" ] || return
-	fi
-
-    COMPREPLY=( $( compgen -W "$WORDS" -- "$cur" ) )
-}
-complete -F _github github
-}
-
 have repost && {
 _repost() {
     local WORDS="backup build diff list log pull push status do"

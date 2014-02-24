@@ -1,19 +1,18 @@
 repos-tools: perform simple tasks on your repositories
 ======================================================
 
-A couple of utilities to work faster and easier on your code repositories:
+An utility to work faster and easier on your code repositories:
 
-* __github__: command line client to github issues, following, watching, etc
 * __repost__: push, pull, build and do things on all of your repos, or some of them
 
-They need the PHP cli. github also needs the cURL extension.
+It needs the PHP cli.
 
 See the [wiki](http://github.com/drotiro/repos-tools/wiki) for documentation and examples.
 
 Copyright and license
 ---------------------
 
-repos-tools is Copyright (C) 2010 Domenico Rotiroti.
+repos-tools is Copyright (C) 2010-2014 Domenico Rotiroti.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as
