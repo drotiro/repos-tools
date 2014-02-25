@@ -4,6 +4,10 @@ COMPDIR=/etc/bash_completion.d
 TOOLS=repost repost-backup
 SCRIPTS=repos-tools
 
+check:
+	@(echo -n " == Checking for php: " && which php) || (echo "missing! Please install the php-cli package"  && exit 1)
+	@echo " == Run 'sudo make install' to install"
+
 install:
 	install    $(TOOLS)   $(BINDIR)
 	install -d $(INCDIR)
